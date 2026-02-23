@@ -47,3 +47,24 @@ API creada para el procesamiento de mensajes, validación de datos y comunicaci�
 ## WebSockets
 
     ws://127.0.0.1:8000/api/ws
+
+## Diagrama - Flujo de Arquitectura
+
+```mermaid
+sequenceDiagram
+    participant C as Cliente (Swagger)
+    participant A as FastAPI API
+    participant S as Message Service
+    participant DB as SQLite
+    participant WS as WebSocket Manager
+    participant U as Usuario Final (HTML)
+
+    C->>A: POST /messages (con API KEY)
+    A->>S: Procesar Contenido
+    S->>S: Filtrar Spam & Contar Palabras
+    S->>DB: Guardar Mensaje
+    DB-->>S: Confirmación
+    S->>WS: Broadcast(NEW_MESSAGE)
+    WS-->>U: Envío en Tiempo Real
+    A-->>C: Respuesta 201 Created 
+```
