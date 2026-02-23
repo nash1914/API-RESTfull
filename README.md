@@ -22,7 +22,7 @@ API creada para el procesamiento de mensajes, validaci√≥n de datos y comunicaci√
 
 1. **Clonar el repositorio:**
    ```bash
-   git clone [https://github.com/TU_USUARIO/TU_REPOSITORIO.git](https://github.com/TU_USUARIO/TU_REPOSITORIO.git)
+   git clone https://github.com/nash1914/API-RESTfull.git
    cd PruebaASD
 
 2. **Configurar el entorno virtual:**
