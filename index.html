@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Nequi Real-Time Chat</title>
+    <style>
+        body { font-family: sans-serif; margin: 20px; background-color: #f4f4f9; }
+        #messages { border: 1px solid #ccc; height: 300px; overflow-y: scroll; padding: 10px; background: white; border-radius: 8px; }
+        .message { margin-bottom: 10px; padding: 8px; border-radius: 5px; background: #e1f5fe; }
+        .system { background: #fff9c4; border-left: 5px solid #fbc02d; }
+        .user { border-left: 5px solid #0288d1; }
+        .meta { font-size: 0.8em; color: #666; }
+    </style>
+</head>
+<body>
+    <h2>Nequi Message Monitor</h2>
+    <div id="status">🔴 Desconectado</div>
+    <br>
+    <div id="messages"></div>
+
+    <script>
+        // Conexión al WebSocket
+        const ws = new WebSocket("ws://127.0.0.1:8000/api/ws");
+        const statusDiv = document.getElementById("status");
+        const messagesDiv = document.getElementById("messages");
+
+        ws.onopen = () => {
+            statusDiv.innerHTML = "🟢 Conectado al Servidor";
+            statusDiv.style.color = "green";
+        };
+
+        ws.onmessage = (event) => {
+            const response = JSON.parse(event.data);
+            if (response.event === "NEW_MESSAGE") {
+                const msg = response.data;
+                const msgElement = document.createElement("div");
+                msgElement.classList.add("message", msg.sender);
+
+                msgElement.innerHTML = `
+                    <strong>${msg.sender.toUpperCase()}:</strong> ${msg.content}
+                    <div class="meta">
+                        Palabras: ${msg.metadata.word_count} | Session: ${msg.session_id}
+                    </div>
+                `;
+
+                messagesDiv.appendChild(msgElement);
+                messagesDiv.scrollTop = messagesDiv.scrollHeight; // Auto-scroll
+            }
+        };
+
+        ws.onclose = () => {
+            statusDiv.innerHTML = "🔴 Conexión perdida";
+            statusDiv.style.color = "red";
+        };
+    </script>
+</body>
+</html>

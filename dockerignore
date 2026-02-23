@@ -1,0 +1,15 @@
+# Entorno virtual
+.venv/
+env/
+
+# Python
+__pycache__/
+*.pyc
+
+# Base de Datos
+*.db
+*.sqlite3
+
+# Tests y herramientas
+.pytest_cache/
+.coverage
